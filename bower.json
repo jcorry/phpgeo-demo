@@ -1,0 +1,26 @@
+{
+  "name": "PHP Geo Demo",
+  "description": "Demonstration of tools used for working with Geo data in PHP web apps",
+  "main": "",
+  "authors": [
+    "John Corry <jcorry@gmail.com>"
+  ],
+  "license": "Unlicense",
+  "homepage": "https://github.com/jcorry/phpgeo-demo",
+  "dependencies": {
+    "backbone": "^1.2.3",
+    "bootstrap-sass": "^3.3.6",
+    "datatables": "^1.10.10",
+    "moment-timezone": "^0.5.0",
+    "requirejs": "^2.1.22",
+    "spin.js": "spinjs#^2.3.2"
+  },
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

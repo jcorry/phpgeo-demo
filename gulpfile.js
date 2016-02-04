@@ -1,4 +1,11 @@
 var elixir = require('laravel-elixir');
+var gulp = require('gulp');
+
+gulp.task('fonts', function() {
+    return gulp.src([
+            './bower_components/bootstrap-sass/assets/fonts/bootstrap/glyphicons-halflings-*'])
+        .pipe(gulp.dest('./public/fonts/bootstrap'));
+});
 
 /*
  |--------------------------------------------------------------------------
@@ -12,5 +19,6 @@ var elixir = require('laravel-elixir');
  */
 
 elixir(function(mix) {
-    mix.sass('app.scss');
+    mix.sass('app.scss')
+        .version('css/app.css');
 });
