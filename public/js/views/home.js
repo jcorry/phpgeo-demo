@@ -1,4 +1,4 @@
-define(['jquery','underscore','backbone','spin', 'app' ],function($,_,Backbone,Spinner){
+define(['jquery','underscore','backbone','spin', 'global' ],function($,_,Backbone){
 
     HomeView = Backbone.View.extend({
         el: 'body',
@@ -7,7 +7,7 @@ define(['jquery','underscore','backbone','spin', 'app' ],function($,_,Backbone,S
         },
         initialize: function(){
             console.log("============= LOADED HOME VIEW ==============")
-            var spinner = $('body').spin();
+
         }
     });
     return HomeView;

@@ -1,9 +1,9 @@
 /*
-Error: File to import not found or unreadable: ./public/js/libs/bootstrap-sass/assets/stylesheets/bootstrap.
+Error: File to import not found or unreadable: bootstrap.
         on line 1 of app.scss
 
-1: @import "./public/js/libs/bootstrap-sass/assets/stylesheets/bootstrap";
-2: @import "./public/js/libs/datatables/media/css/dataTables.bootstrap.css";
+1: @import "bootstrap";
+2: @import "font-awesome";
 3: @import "map";
 4: @import "global";
 
@@ -51,4 +51,4 @@ app.scss:1
 body:before {
   white-space: pre;
   font-family: monospace;
-  content: "Error: File to import not found or unreadable: ./public/js/libs/bootstrap-sass/assets/stylesheets/bootstrap.\A         on line 1 of app.scss\A \A 1: @import \"./public/js/libs/bootstrap-sass/assets/stylesheets/bootstrap\";\A 2: @import \"./public/js/libs/datatables/media/css/dataTables.bootstrap.css\";\A 3: @import \"map\";\A 4: @import \"global\";"; }
+  content: "Error: File to import not found or unreadable: bootstrap.\A         on line 1 of app.scss\A \A 1: @import \"bootstrap\";\A 2: @import \"font-awesome\";\A 3: @import \"map\";\A 4: @import \"global\";"; }

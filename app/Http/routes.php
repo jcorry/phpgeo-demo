@@ -15,6 +15,11 @@ Route::get('/', function () {
     return view('home');
 });
 
+Route::get('/map', function(){
+    return view('map', ['page' => 'map']);
+});
+
+
 /*
 |--------------------------------------------------------------------------
 | Application Routes
