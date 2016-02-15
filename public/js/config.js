@@ -11,20 +11,30 @@ var require = {
         },
         moment_tz: {
             deps: ['moment']
+        },
+        app: {
+            deps: ['jquery']
+        },
+        "jquery.spin" : {
+            deps: ['spin', 'jquery']
         }
     },
     paths: {
-        app: "libs/app",
-        backbone: "libs/backbone/backbone",
-        bootstrap : "libs/bootstrap-sass/assets/javascripts/bootstrap",
-        datatables: "libs/datatables/media/js/jquery.dataTables",
-        jquery: "libs/jquery/dist/jquery",
-        moment: 'libs/moment/moment',
+        async: 'libs/async',
+        global: "libs/app",
+        backbone: "libs/backbone",
+        bootstrap : "libs/bootstrap",
+        datatables: "libs/jquery.dataTables",
+        jquery: "libs/jquery",
+        moment: 'libs/moment',
         moment_tz: 'libs/moment-timezone/builds/moment-timezone-with-data',
-        underscore: 'libs/underscore/underscore',
-        spin: 'libs/spin.js/spin',
+        underscore: 'libs/underscore',
+        spin : 'libs/spin',
+        "jquery.spin" : 'libs/jquery.spin',
+        app: 'libs/app',
 
         /** || Views || */
-        home: "views/home"
+        home: "views/home",
+        map: "views/map"
     }
 }
