@@ -21,8 +21,11 @@ var require = {
         "wicket" : {
             exports : "Wkt"
         },
+        "wkt-wrapper" : {
+            deps : ['wicket']
+        },
         "wicket.gmaps" : {
-            deps: ['wicket', 'jquery']
+            deps: ['wkt-wrapper', 'jquery']
         }
     },
     paths: {
@@ -40,6 +43,7 @@ var require = {
         app: 'libs/app',
         "wicket": 'libs/wicket',
         "wicket.gmaps": 'libs/wicket-gmap3',
+        "wkt-wrapper" : 'wrappers/wkt',
 
         /** || Views || */
         home: "views/home",

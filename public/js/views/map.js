@@ -1,4 +1,4 @@
-define(['jquery','underscore','backbone', 'jquery.spin', 'app', 'wicket', 'wicket.gmaps' ],function($,_,Backbone, Wkt){
+define(['jquery','underscore','backbone', 'jquery.spin', 'app', 'wicket', 'wicket.gmaps' ],function($, _, Backbone){
 
     MapView = Backbone.View.extend({
         el: 'body',
