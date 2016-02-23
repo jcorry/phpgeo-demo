@@ -29,7 +29,8 @@ var paths = {
     "require" : "vendor/bower_components/requirejs/",
     "require-plugins" : "vendor/bower_components/requirejs-plugins/",
     "spin" : "vendor/bower_components/spin.js/",
-    "underscore" : "vendor/bower_components/underscore/"
+    "underscore" : "vendor/bower_components/underscore/",
+    "wicket" : "vendor/bower_components/Wicket/"
 }
 
 elixir(function(mix) {
@@ -79,6 +80,14 @@ elixir(function(mix) {
     .copy(
         paths.spin + 'jquery.spin.js',
         'public/js/libs/jquery.spin.js'
+    )
+    .copy(
+        paths.wicket + 'wicket.js',
+        'public/js/libs/wicket.js'
+    )
+    .copy(
+        paths.wicket + 'wicket-gmap3.js',
+        'public/js/libs/wicket-gmap3.js'
     );
 
     mix.version('css/app.css');

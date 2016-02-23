@@ -17,6 +17,12 @@ var require = {
         },
         "jquery.spin" : {
             deps: ['spin', 'jquery']
+        },
+        "wicket" : {
+            exports : "Wkt"
+        },
+        "wicket.gmaps" : {
+            deps: ['wicket', 'jquery']
         }
     },
     paths: {
@@ -32,6 +38,8 @@ var require = {
         spin : 'libs/spin',
         "jquery.spin" : 'libs/jquery.spin',
         app: 'libs/app',
+        "wicket": 'libs/wicket',
+        "wicket.gmaps": 'libs/wicket-gmap3',
 
         /** || Views || */
         home: "views/home",
