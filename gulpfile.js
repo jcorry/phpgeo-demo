@@ -1,10 +1,16 @@
 var elixir = require('laravel-elixir');
 var gulp = require('gulp');
+var merge = require('merge-stream');
+
 
 gulp.task('fonts', function() {
-    return gulp.src([
-            './bower_components/bootstrap-sass/assets/fonts/bootstrap/glyphicons-halflings-*'])
+    var bootstrap = gulp.src(['./vendor/bower_components/bootstrap-sass/assets/fonts/bootstrap/glyphicons-halflings-*'])
         .pipe(gulp.dest('./public/fonts/bootstrap'));
+
+    var fontawesome = gulp.src(['./vendor/bower_components/font-awesome/fonts/fontawesome-webfont.*'])
+        .pipe(gulp.dest('./public/build/fonts'));
+
+    return merge(bootstrap, fontawesome);
 });
 
 /*

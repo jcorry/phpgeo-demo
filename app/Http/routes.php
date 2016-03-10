@@ -15,9 +15,7 @@ Route::get('/', function () {
     return view('home');
 });
 
-Route::get('/map', function(){
-    return view('map', ['page' => 'map']);
-});
+
 
 
 /*
@@ -33,4 +31,10 @@ Route::get('/map', function(){
 
 Route::group(['middleware' => ['web']], function () {
     //
+    Route::get('/map', function(){
+        return view('map', ['page' => 'map']);
+    });
+
+    Route::post('/locations/save', 'LocationsController@save');
+    Route::get('/locations/list', 'LocationsController@listLocations');
 });
