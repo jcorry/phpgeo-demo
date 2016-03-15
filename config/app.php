@@ -153,6 +153,7 @@ return [
          * Package providers
          */
         Chrisbjr\ApiGuard\Providers\ApiGuardServiceProvider::class,
+        Jenssegers\Mongodb\MongodbServiceProvider::class,
 
         /*
          * Application Service Providers...

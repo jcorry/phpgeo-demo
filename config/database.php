@@ -63,7 +63,17 @@ return [
             'prefix'    => '',
             'strict'    => false,
         ],
-
+        'mongodb' => [
+            'driver'   => 'mongodb',
+            'host'     => env('MONGO_HOST', 'localhost'),
+            'port'     => env('MONGO_PORT', 27017),
+            'database' => env('MONGO_DATABASE', 'phpgeo-demo'),
+            'username' => env('MONGO_USERNAME', 'jcorry'),
+            'password' => env('MONGO_PASSWORD', 'yikyak'),
+            'options' => [
+                'db' => 'admin' // sets the authentication database required by mongo 3
+            ]
+        ],
         'pgsql' => [
             'driver'   => 'pgsql',
             'host'     => env('DB_HOST', 'localhost'),

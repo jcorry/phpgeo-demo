@@ -13,8 +13,12 @@
 
 Route::get('/', function () {
     return view('home');
+
+
 });
 
+/** API Routes */
+Route::get('/locations/containing/{lat}/{lng}', 'LocationsController@contains');
 
 
 

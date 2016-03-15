@@ -11,9 +11,17 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
+use App\Repositories\LocationRepository as Location;
 
 class LocationsController extends Controller
 {
+
+    private $location;
+
+    public function __construct(Location $location)
+    {
+        $this->location = $location;
+    }
 
     /**
      *
@@ -24,7 +32,7 @@ class LocationsController extends Controller
             'data' => null
         ];
 
-        $locations  = \App\Models\Location::select(\DB::raw('name, FORMAT(ST_Y(center), 4) AS lat, FORMAT(ST_X(center), 4) AS lng'))
+        $locations  = $this->location->select(\DB::raw('name, FORMAT(ST_Y(center), 4) AS lat, FORMAT(ST_X(center), 4) AS lng'))
             ->get();
 
         $out['data'] = $locations;
@@ -63,5 +71,13 @@ class LocationsController extends Controller
         $location->save();
         
         return Response::json($out);
+    }
+
+    /**
+     * @param Request $request
+     */
+    public function contains(Request $request)
+    {
+
     }
 }

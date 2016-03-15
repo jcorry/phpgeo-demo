@@ -56,6 +56,10 @@ elixir(function(mix) {
         "app.css"
     ], 'public/css/app.css', 'public/css')
     .copy(
+        paths.datatables + 'images/',
+        'public/build/images/'
+    )
+    .copy(
         paths['require-plugins'] + 'src/async.js',
         'public/js/libs/async.js'
     )
@@ -66,6 +70,10 @@ elixir(function(mix) {
     .copy(
         paths.bootstrap + 'javascripts/bootstrap.js',
         'public/js/libs/bootstrap.js'
+    )
+    .copy(
+        paths.bootstrap + 'fonts/bootstrap/',
+        'public/build/fonts/bootstrap/'
     )
     .copy(
         paths.datatables + 'js/jquery.dataTables.js',
