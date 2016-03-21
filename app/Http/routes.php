@@ -18,8 +18,9 @@ Route::get('/', function () {
 });
 
 /** API Routes */
-Route::get('/locations/containing/{lat}/{lng}', 'LocationsController@contains');
+Route::get('/mysql/locations/containing/{lat}/{lng}', 'LocationsController@contains');
 
+Route::get('/mongo/locations/containing/{lat}/{lng}', 'LocatinsController@mongoContains');
 
 
 /*
@@ -39,6 +40,7 @@ Route::group(['middleware' => ['web']], function () {
         return view('map', ['page' => 'map']);
     });
 
+    // save the location to both mongo and 
     Route::post('/locations/save', 'LocationsController@save');
     Route::get('/locations/list', 'LocationsController@listLocations');
 });
