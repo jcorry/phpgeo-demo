@@ -16,4 +16,31 @@ class GeojsonLocation extends Model
     protected $connection = 'mongodb';
 
 
+    public function listLocations()
+    {
+        return $this->orderBy('area', 'desc')->get();
+    }
+
+    /**
+     * @param $lat
+     * @param $lng
+     */
+    public static function intersects($lat, $lng)
+    {
+        $object = self::whereRaw([
+            'bounds' => [
+                '$geoIntersects' => [
+                    '$geometry' => [
+                        'type' => 'Point',
+                        'coordinates' => [(float)$lng, (float)$lat]
+                    ]
+                ]
+            ]
+        ])->orderBy('area', 'DESC')
+        ->get();
+
+        return $object;
+    }
+
+
 }

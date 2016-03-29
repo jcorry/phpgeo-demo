@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="row">
-        <div class="col-sm-3">
+        <div class="col-sm-4">
             <table class="table table-striped dataTable" id="locationsTable">
                 <h2>Locations</h2>
                 <tbody></tbody>
@@ -11,6 +11,7 @@
                         <th>Location Name</th>
                         <th>Lat</th>
                         <th>Lng</th>
+                        <th>&nbsp;</th>
                     </tr>
                 </thead>
                 <tfoot>
@@ -18,6 +19,7 @@
                         <th>Location Name</th>
                         <th>Lat</th>
                         <th>Lng</th>
+                        <th>&nbsp;</th>
                     </tr>
                 </tfoot>
             </table>
@@ -48,7 +50,7 @@
                 </div>
             {{ Form::close() }}
         </div>
-        <div class="col-sm-9">
+        <div class="col-sm-8">
             <div id="map-canvas"></div>
             <div class="form-group">
                 <button class="btn btn-xs btn-danger disabled" id="btn-remove-shape"><i class="fa fa-remove"></i> Delete Shape</button>

@@ -16,11 +16,20 @@ define(['jquery','underscore','backbone','datatables','jquery.spin','app','wicke
                 };
 
                 this.saveLocation(data);
+            },
+            "click a.loadLocation" : function(e) {
+                var locationId = $(e.currentTarget).data('locationid');
+                this.loadLocation(locationId);
+            },
+            "click a.deleteLocation" : function(e) {
+                var locationId = $(e.currentTarget).data('locationid');
+                console.log('delete location: ' + locationId);
             }
         },
         map : {},
         drawMgr : null,
         geometry : {},
+        features : [],
         initialize: function(){
             console.log("============= LOADED HOME VIEW ==============")
             var spinner = $('body').spin();
@@ -37,19 +46,77 @@ define(['jquery','underscore','backbone','datatables','jquery.spin','app','wicke
             console.log()
             this.locationsTable = $('table#locationsTable').DataTable({
                 ajax : {
-                    url : '/locations/list',
+                    url : '/api/v1/mysql/locations',
                     type : 'GET',
                     data : {}
                 },
                 columns : [
                     {data : 'name'},
                     {data : 'lat'},
-                    {data : 'lng'}
-                ]
+                    {data : 'lng'},
+                    {data : function(row, type, set){
+                        var html = '<a href="#" class="btn btn-xs btn-primary loadLocation" data-locationid="' + row.id + '">Load</a>';
+                        html += ' <a href="#" class="btn btn-xs btn-danger deleteLocation" data-locationid="' + row.id + '"><i class="fa fa-remove"></i></a>';
+                        return html;
+                    }}
+                ],
+                createdRow : function(row, data, dataIndex) {
+                    $(row).attr('id', 'location-' + data.id);
+                }
+
             });
         },
-        loadLocation : function() {
+        loadLocation : function(locationId) {
+            console.log('load location: ' + locationId);
+            var data = this.locationsTable.row("#location-" + locationId).data();
+            // set the geometry
+            wkt = new Wkt.Wkt();
+            wkt.read(data.bounds_wkt);
 
+            if((locationId in this.features)) {
+                this.features[locationId].setMap(null);
+            }
+
+            this.features[locationId] = wkt.toObject(this.map.defaults);
+
+
+            // Add listeners for overlay editing events
+            if (!Wkt.isArray(this.features[locationId]) && wkt.type !== 'point') {
+                // New vertex is inserted
+                google.maps.event.addListener(this.features[locationId], 'click', function(n){
+                    this.areaToggleEditable();
+                }.bind(this));
+
+                google.maps.event.addListener(this.features[locationId].getPath(), 'insert_at', function (n) {
+                    this.updateText();
+                }.bind(this));
+                // Existing vertex is removed (insertion is undone)
+                google.maps.event.addListener(this.features[locationId].getPath(), 'remove_at', function (n) {
+                    this.updateText();
+                }.bind(this));
+                // Existing vertex is moved (set elsewhere)
+                google.maps.event.addListener(this.features[locationId].getPath(), 'set_at', function (n) {
+                    this.updateText();
+                }.bind(this));
+            } else {
+                if (this.features[locationId].setEditable) {this.features[locationId].setEditable(false);}
+            }
+
+            var bounds = new google.maps.LatLngBounds();
+
+            this.features[locationId].setMap(this.map);
+
+            this.features[locationId].getPath().forEach(function(element, index){bounds.extend(element)});
+
+            this.map.fitBounds(bounds);
+
+            this.geometry = this.features[locationId];
+
+            // populate the form
+            this.updateText();
+            // add the editable polygon to the map
+
+            console.log(data);
         },
         newLocation : function() {
             // remove existing polygon
@@ -72,8 +139,7 @@ define(['jquery','underscore','backbone','datatables','jquery.spin','app','wicke
                     this.areaToggleEditable();
                 }.bind(this));
 
-                $('textarea[name="geometry_wkt"]').val(this.getWktFromGeometry());
-                $('textarea[name="geometry_geojson"]').val(JSON.stringify(this.getGeoJsonFromGeometry()));
+                this.updateText();
 
                 $('#btn-remove-shape').off();
                 $('#btn-remove-shape').removeClass('disabled');
@@ -147,7 +213,6 @@ define(['jquery','underscore','backbone','datatables','jquery.spin','app','wicke
             return wktObj.write();
         },
         getGeoJsonFromGeometry: function() {
-
             return exportGeoJson(this.geometry);
 
             function exportGeoJson(polygon) {
@@ -179,10 +244,21 @@ define(['jquery','underscore','backbone','datatables','jquery.spin','app','wicke
             };
             this.map = new google.maps.Map(document.getElementById('map-canvas'), {
                 center : center,
-                zoom : 8
+                zoom : 8,
+                defaults : {
+                    editable: false,
+                    draggable: false,
+                    fillColor: '#000000',
+                    strokeColor: '#000000'
+                }
             });
             // drawing manager
             this.drawMgr = new google.maps.drawing.DrawingManager();
+        },
+        updateText : function() {
+            $('textarea[name="geometry_wkt"]').val(this.getWktFromGeometry());
+            $('textarea[name="geometry_geojson"]').val(JSON.stringify(this.getGeoJsonFromGeometry()));
+
         }
     });
     return MapView;

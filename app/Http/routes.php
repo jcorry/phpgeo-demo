@@ -18,10 +18,21 @@ Route::get('/', function () {
 });
 
 /** API Routes */
-Route::get('/mysql/locations/containing/{lat}/{lng}', 'LocationsController@contains');
+Route::get('/api/v1/mysql/locations', 'LocationsController@listLocations');
+Route::get('/api/v1/mongo/locations', 'LocationsController@listLocations');
 
-Route::get('/mongo/locations/containing/{lat}/{lng}', 'LocatinsController@mongoContains');
+Route::post('/api/v1/mysql/locations', 'LocationsController@create');
+Route::put('/api/v1/mysql/locations/{id}', 'LocationsController@update');
+Route::delete('/api/v1/mysql/locations/{id}', 'LocationsController@delete');
+Route::get('/api/v1/mysql/locations/intersects', 'LocationsController@intersects');
+Route::get('/api/v1/mysql/locations/contains', 'LocationsController@contains');
 
+Route::get('/api/v1/mysql/actions', 'ActionsController@listActions');
+Route::post('/api/v1/mysql/actions', 'ActionsController@create');
+Route::put('/api/v1/mysql/actions/{id}', 'ActionsController@update');
+Route::delete('/api/v1/mysql/actions/{id}', 'ActionsController@delete');
+Route::get('/api/v1/mysql/actions/intersects', 'ActionsController@intersects');
+Route::get('/api/v1/mysql/actions/contains', 'ActionsController@contains');
 
 /*
 |--------------------------------------------------------------------------

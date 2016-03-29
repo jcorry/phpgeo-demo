@@ -11,16 +11,23 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
-use App\Models\Location as Location;
+
 
 class LocationsController extends Controller
 {
 
     private $location;
 
-    public function __construct(Location $location)
+    public function __construct(Request $request)
     {
-        $this->location = $location;
+        if(str_contains($request->path(), 'mysql')) {
+            $this->model = new \App\Models\Location();
+        }
+
+        if(str_contains($request->path(), 'mongo')) {
+            $this->model = new \App\Models\GeojsonLocation();
+        }
+
     }
 
     /**
@@ -32,15 +39,8 @@ class LocationsController extends Controller
             'data' => null
         ];
 
-        $locations  = $this->location->select(
-                \DB::raw('name, 
-                    FORMAT(ST_Y(center), 4) AS lat, 
-                    FORMAT(ST_X(center), 4) AS lng, 
-                    ST_AsWKT(bounds) AS bounds_wkt')
-            )
-            ->get();
+        $out['data'] = $this->model->listLocations();
 
-        $out['data'] = $locations;
 
         return Response::json($out);
     }
@@ -56,8 +56,10 @@ class LocationsController extends Controller
 
         if(!$request->has('id')) {
             $location = new \App\Models\Location;
+            $geojsonLocation = new \App\Models\GeojsonLocation;
         } else {
             $location = \App\Models\Location::find($request->input('id'));
+            $geojsonLocation = \App\Models\GeojsonLocation::find($request->input('id'));
         }
 
         $location->name = $request->input('name');
@@ -72,9 +74,26 @@ class LocationsController extends Controller
         $location->center = \DB::raw("PointFromText('POINT(" . $centroid->getX() . ' ' . $centroid->getY() . ")')");
         $location->bounds = \DB::raw("PolyFromText('" . $geometry . "')");
         $location->area = $area;
-
         $location->save();
-        
+
+        // save it in the mongo model too...
+        $geojsonLocation->name = $request->input('name');
+        $geojsonLocation->description = $request->input('description');
+        $geojsonLocation->area = $area;
+
+        // save the center as GeoJSON
+        $centroidWkt = \geoPHP::load('POINT(' . $centroid->getX() . ' ' . $centroid->getY() . ')', 'wkt');
+        $geojsonLocation->center = json_decode($centroidWkt->out('json'));
+
+        // save the geometry as geoJSON
+        $geojsonLocation->bounds = json_decode($polygon->out('json'));
+        $geojsonLocation->save();
+
+
+        $out['data']['location'] = $location;
+        $out['data']['geojsonLocation'] = $geojsonLocation;
+
+
         return Response::json($out);
     }
 
