@@ -42,5 +42,28 @@ class GeojsonLocation extends Model
         return $object;
     }
 
+    /**
+     * @param $lat
+     * @param $lng
+     */
+    public static function contains($coordinates)
+    {
+        $object = self::whereRaw([
+            'bounds' => [
+                '$geoWithin' => [
+                    '$geometry' => [
+                        'type' => 'Polygon',
+                        'coordinates' => [$coordinates]
+                    ]
+                ]
+            ]
+        ])->orderBy('area', 'DESC')
+            ->get();
+
+        return $object;
+    }
+
+
+
 
 }

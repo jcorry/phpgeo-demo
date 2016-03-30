@@ -10,29 +10,33 @@
 | and give it the controller to call when that URI is requested.
 |
 */
-
 Route::get('/', function () {
     return view('home');
-
-
 });
 
+
 /** API Routes */
-Route::get('/api/v1/mysql/locations', 'LocationsController@listLocations');
+Route::get('/api/v1/postgis/locations', 'LocationsController@listLocations');
 Route::get('/api/v1/mongo/locations', 'LocationsController@listLocations');
 
-Route::post('/api/v1/mysql/locations', 'LocationsController@create');
-Route::put('/api/v1/mysql/locations/{id}', 'LocationsController@update');
-Route::delete('/api/v1/mysql/locations/{id}', 'LocationsController@delete');
-Route::get('/api/v1/mysql/locations/intersects', 'LocationsController@intersects');
-Route::get('/api/v1/mysql/locations/contains', 'LocationsController@contains');
+Route::post('/api/v1/postgis/locations', 'LocationsController@create');
+Route::put('/api/v1/postgis/locations/{id}', 'LocationsController@update');
+Route::delete('/api/v1/postgis/locations/{id}', 'LocationsController@delete');
 
-Route::get('/api/v1/mysql/actions', 'ActionsController@listActions');
-Route::post('/api/v1/mysql/actions', 'ActionsController@create');
-Route::put('/api/v1/mysql/actions/{id}', 'ActionsController@update');
-Route::delete('/api/v1/mysql/actions/{id}', 'ActionsController@delete');
-Route::get('/api/v1/mysql/actions/intersects', 'ActionsController@intersects');
-Route::get('/api/v1/mysql/actions/contains', 'ActionsController@contains');
+
+Route::get('/api/v1/postgis/locations/intersects', 'LocationsController@intersects');
+Route::get('/api/v1/mongo/locations/intersects', 'LocationsController@intersects');
+
+Route::post('/api/v1/postgis/locations/contains', 'LocationsController@contains');
+Route::post('/api/v1/mongo/locations/contains', 'LocationsController@contains');
+
+
+Route::get('/api/v1/postgis/actions', 'ActionsController@listActions');
+Route::post('/api/v1/postgis/actions', 'ActionsController@create');
+Route::put('/api/v1/postgis/actions/{id}', 'ActionsController@update');
+Route::delete('/api/v1/postgis/actions/{id}', 'ActionsController@delete');
+Route::get('/api/v1/postgis/actions/intersects', 'ActionsController@intersects');
+Route::get('/api/v1/postgis/actions/contains', 'ActionsController@contains');
 
 /*
 |--------------------------------------------------------------------------
@@ -49,6 +53,10 @@ Route::group(['middleware' => ['web']], function () {
     //
     Route::get('/map', function(){
         return view('map', ['page' => 'map']);
+    });
+
+    Route::get('/test', function(){
+        return Response::json(['message' => 42]);
     });
 
     // save the location to both mongo and 

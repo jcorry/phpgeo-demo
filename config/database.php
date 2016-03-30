@@ -63,6 +63,17 @@ return [
             'prefix'    => '',
             'strict'    => false,
         ],
+        'postgis' => [
+            'driver'   => 'pgsql',
+            'host'     => env('POSTGIS_HOST', 'localhost'),
+            'database' => env('POSTGIS_DATABASE', 'geophp'),
+            'username' => env('POSTGIS_USERNAME', 'jcorry'),
+            'password' => env('POSTGIS_PASSWORD', ''),
+            'charset'  => 'utf8',
+            'prefix'   => '',
+            'schema'   => 'public',
+        ],
+
         'mongodb' => [
             'driver'   => 'mongodb',
             'host'     => env('MONGO_HOST', 'localhost'),

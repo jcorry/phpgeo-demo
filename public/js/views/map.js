@@ -46,7 +46,7 @@ define(['jquery','underscore','backbone','datatables','jquery.spin','app','wicke
             console.log()
             this.locationsTable = $('table#locationsTable').DataTable({
                 ajax : {
-                    url : '/api/v1/mysql/locations',
+                    url : '/api/v1/postgis/locations',
                     type : 'GET',
                     data : {}
                 },
@@ -232,6 +232,10 @@ define(['jquery','underscore','backbone','datatables','jquery.spin','app','wicke
                     var pt = polygon.getPath().getAt(i);
                     polygonFeature.geometry.coordinates.push([pt.lng(), pt.lat()]);
                 }
+                // close the polygon
+                var pt = polygon.getPath().getAt(0);
+                polygonFeature.geometry.coordinates.push([pt.lng(), pt.lat()]);
+                
                 geoJson.features.push(polygonFeature);
 
                 return geoJson;

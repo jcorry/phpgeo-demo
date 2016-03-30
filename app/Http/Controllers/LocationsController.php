@@ -20,14 +20,13 @@ class LocationsController extends Controller
 
     public function __construct(Request $request)
     {
-        if(str_contains($request->path(), 'mysql')) {
+        if(str_contains($request->path(), 'postgis')) {
             $this->model = new \App\Models\Location();
         }
 
         if(str_contains($request->path(), 'mongo')) {
             $this->model = new \App\Models\GeojsonLocation();
         }
-
     }
 
     /**
@@ -71,8 +70,8 @@ class LocationsController extends Controller
         $centroid = $polygon->getCentroid();
         $area = $polygon->getArea();
 
-        $location->center = \DB::raw("PointFromText('POINT(" . $centroid->getX() . ' ' . $centroid->getY() . ")')");
-        $location->bounds = \DB::raw("PolyFromText('" . $geometry . "')");
+        $location->center = \DB::raw("ST_SetSRID(ST_PointFromText('POINT(" . $centroid->getX() . ' ' . $centroid->getY() . ")'), 4326)");
+        $location->bounds = \DB::raw("ST_SetSRID(ST_PolygonFromText('" . $geometry . "'), 4326)");
         $location->area = $area;
         $location->save();
 
@@ -100,8 +99,41 @@ class LocationsController extends Controller
     /**
      * @param Request $request
      */
+    public function intersects(Request $request)
+    {
+        $start = microtime(true);
+
+        $object = $this->model->intersects($request->input('lat'), $request->input('lng'));
+
+        $elapsed = microtime(true) - $start;
+
+        $logMessage = 'ms to get %s data: %f in %s';
+
+        \Log::debug(sprintf($logMessage, str_contains($request->path(), 'mongo') ? 'Mongo' : 'PostGIS', $elapsed, 'intersects'));
+
+
+        return Response::json($object);
+    }
+
+    /**
+     * @param Request $request
+     */
     public function contains(Request $request)
     {
+        $start = microtime(true);
+        if(str_contains($request->path(), 'mongo')) {
+            $object = $this->model->contains($request->json('geometry.coordinates'));
+            $elapsed = microtime(true) - $start;
+        } else {
+            $geometry = \geoPHP::load($request->input('geometry'), 'wkt');
+            $object = $this->model->contains($geometry->asText('wkt'));
+            $elapsed = microtime(true) - $start;
+        }
 
+        $logMessage = 'ms to get %s data: %f in %s';
+
+        \Log::debug(sprintf($logMessage, str_contains($request->path(), 'mongo') ? 'Mongo' : 'PostGIS', $elapsed, 'contains'));
+
+        return Response::json($object);
     }
 }
