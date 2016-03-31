@@ -67,12 +67,19 @@ class LocationsController extends Controller
         // get the center
         $geometry = $request->input('geometryWkt');
         $polygon = \geoPHP::load($geometry);
+        $polygon->setSRID(4326);
+
+        $srid = $polygon->SRID();
+        $geos = \geoPHP::geosInstalled();
+        $valid = $polygon->checkValidity();
+
         $centroid = $polygon->getCentroid();
         $area = $polygon->getArea();
 
         $location->center = \DB::raw("ST_SetSRID(ST_PointFromText('POINT(" . $centroid->getX() . ' ' . $centroid->getY() . ")'), 4326)");
         $location->bounds = \DB::raw("ST_SetSRID(ST_PolygonFromText('" . $geometry . "'), 4326)");
         $location->area = $area;
+
         $location->save();
 
         // save it in the mongo model too...

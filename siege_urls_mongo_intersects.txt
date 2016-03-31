@@ -1,0 +1,7 @@
+# URLs to siege test API endpoints with geoqueries
+# siege -t30S -f siege_urls_mongo_intersects.txt
+
+#hit
+http://local.phpgeo/api/v1/mongo/locations/intersects?lat=33.8272&lng=-84.3891
+#miss
+http://local.phpgeo/api/v1/mongo/locations/intersects?lat=36.8272&lng=-87.3891

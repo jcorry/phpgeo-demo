@@ -1,0 +1,4 @@
+# URLs to siege test API endpoints with geoqueries
+# siege -t2M -f siege_urls.txt
+http://local.phpgeo/api/v1/postgis/locations/intersects?lat=33.8272&lng=-84.3891
+http://local.phpgeo/api/v1/postgis/locations/intersects?lat=35.8272&lng=-86.3891

@@ -1,0 +1,7 @@
+# URLs to siege test API endpoints with geoqueries
+# siege -c 2 -H 'Content-Type: application/json' -f siege_urls_mongo_contains.txt
+
+#hit
+#http://local.phpgeo/api/v1/mongo/locations/contains POST {"geometry":{"type":"Polygon","coordinates":[[[-82.42664337158203,30.107117887092382],[-83.30554962158203,30.71350399035497],[-83.96472930908203, 30.01203068035861],[-82.42664337158203, 30.107117887092382]]]}}
+#miss
+http://local.phpgeo/api/v1/mongo/locations/contains POST {"geometry":{"type":"Polygon","coordinates":[[-85.65662384033203,34.903952965590065],[-85.04138946533203,31.57853542647338],[-81.87732696533203,33.486435450999885],[-85.65662384033203,34.903952965590065]]}}

@@ -92,6 +92,16 @@ class Location extends Model
         
     }
 
+    /**
+     * @param $geometryWkt
+     * @param string $units
+     * https://www.easycalculation.com/area/learn-polygon.php
+     */
+    public static function areaOfPolygon($geometryWkt, $units = 'mi')
+    {
+
+    }
+
 
 
 }
