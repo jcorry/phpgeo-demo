@@ -30,13 +30,14 @@ Route::get('/api/v1/mongo/locations/intersects', 'LocationsController@intersects
 Route::post('/api/v1/postgis/locations/contains', 'LocationsController@contains');
 Route::post('/api/v1/mongo/locations/contains', 'LocationsController@contains');
 
+Route::post('/api/v1/postgis/actions/inradius', 'ActionsController@inRadius');
+Route::post('/api/v1/postgis/actions/within', 'ActionsController@within');
+
 
 Route::get('/api/v1/postgis/actions', 'ActionsController@listActions');
 Route::post('/api/v1/postgis/actions', 'ActionsController@create');
 Route::put('/api/v1/postgis/actions/{id}', 'ActionsController@update');
 Route::delete('/api/v1/postgis/actions/{id}', 'ActionsController@delete');
-Route::get('/api/v1/postgis/actions/intersects', 'ActionsController@intersects');
-Route::get('/api/v1/postgis/actions/contains', 'ActionsController@contains');
 
 /*
 |--------------------------------------------------------------------------
@@ -53,6 +54,10 @@ Route::group(['middleware' => ['web']], function () {
     //
     Route::get('/map', function(){
         return view('map', ['page' => 'map']);
+    });
+
+    Route::get('/actions', function(){
+        return view('actions', ['page' => 'actions']);
     });
 
     Route::get('/test', function(){

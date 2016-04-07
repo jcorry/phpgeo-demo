@@ -36,7 +36,7 @@ class SeedActionsTable extends Seeder
             ];
 
             \App\Models\Action::insert([
-                'location' => \DB::raw("PointFromText('POINT(" . $lng . ' ' . $lat . ")')"),
+                'location' => \DB::raw("ST_SetSRID(ST_PointFromText('POINT(" . $lng . ' ' . $lat . ")'), 4326)"),
                 'data' => json_encode($data),
                 'created_at' => $created_at
             ]);

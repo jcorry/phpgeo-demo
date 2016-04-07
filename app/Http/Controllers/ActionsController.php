@@ -33,6 +33,31 @@ class ActionsController extends Controller
         return Response::json($collection);
     }
 
+
+    /**
+     * @param Request $request
+     */
+    public function inRadius(Request $request)
+    {
+        $collection = $this->model->getByRadius($request->input('lat'), $request->input('lng'), $request->input('radius'));
+
+        $area = M_PI * pow($request->input('radius'), 2);
+
+        return Response::json(['points' => $collection, 'area' => $area]);
+    }
+
+    /**
+     *
+     */
+    public function within(Request $request)
+    {
+
+        $collection = $this->model->within($request->input('geometry'));
+
+        return Response::json($collection);
+    }
+
+
     public function create() {
         $start = microtime(true);
 

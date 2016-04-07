@@ -47,6 +47,7 @@ var require = {
 
         /** || Views || */
         home: "views/home",
-        map: "views/map"
+        map: "views/map",
+        actions: "views/actions"
     }
 }
