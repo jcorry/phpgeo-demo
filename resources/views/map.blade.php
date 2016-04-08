@@ -41,12 +41,12 @@
 
                 <div class="form-group">
                     <label for="geometry_wkt">geometry (wkt):</label>
-                    {!! Form::textarea('geometry_wkt', null, ['class' => 'form-control', 'disabled' => true]) !!}
+                    {!! Form::textarea('geometry_wkt', null, ['class' => 'form-control']) !!}
                 </div>
 
                 <div class="form-group">
                     <label for="geometry_geojson">geometry (geoJSON):</label>
-                    {!! Form::textarea('geometry_geojson', null, ['class' => 'form-control', 'disabled' => true]) !!}
+                    {!! Form::textarea('geometry_geojson', null, ['class' => 'form-control']) !!}
                 </div>
             {{ Form::close() }}
         </div>

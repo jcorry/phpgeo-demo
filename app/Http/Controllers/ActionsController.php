@@ -51,10 +51,22 @@ class ActionsController extends Controller
      */
     public function within(Request $request)
     {
+        $start = microtime(true);
 
-        $collection = $this->model->within($request->input('geometry'));
+        if(str_contains($request->path(), 'mongo')) {
+            $collection = $this->model->within($request->json('geometry.coordinates'));
+            $elapsed = microtime(true) - $start;
+        } else {
+            $geometry = \geoPHP::load($request->input('geometry'), 'wkt');
+            $collection = $this->model->within($geometry->asText('wkt'));
+            $elapsed = microtime(true) - $start;
+        }
 
-        return Response::json($collection);
+        $logMessage = 'ms to get %s data: %f in %s';
+
+        \Log::debug(sprintf($logMessage, str_contains($request->path(), 'mongo') ? 'Mongo' : 'PostGIS', $elapsed, 'within()'));
+
+        return Response::json(['points' => $collection, 'area' => 0]);
     }
 
 

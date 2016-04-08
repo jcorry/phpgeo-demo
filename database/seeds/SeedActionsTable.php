@@ -14,11 +14,11 @@ class SeedActionsTable extends Seeder
     {
         $faker = \Faker\Factory::create();
 
-        $maxLat = 33.9456;
-        $minLat = 33.5746;
+        $maxLat = 34.9456;
+        $minLat = 31.2746;
 
-        $maxLng = -84.2266;
-        $minLng = -84.5246;
+        $maxLng = -85.1266;
+        $minLng = -83.2246;
 
         $actions = [
             'check_in',
@@ -37,10 +37,17 @@ class SeedActionsTable extends Seeder
 
             \App\Models\Action::insert([
                 'location' => \DB::raw("ST_SetSRID(ST_PointFromText('POINT(" . $lng . ' ' . $lat . ")'), 4326)"),
-                'data' => json_encode($data),
-                'created_at' => $created_at
+                'data' => json_encode($data)
             ]);
 
+            $geojson = new \stdClass();
+            $geojson->type = "Point";
+            $geojson->coordinates = [$lng, $lat];
+
+            $geojsonAction = new \App\Models\GeojsonAction();
+            $geojsonAction->location = $geojson;
+            $geojsonAction->data = $data;
+            $geojsonAction->save();
         }
 
     }

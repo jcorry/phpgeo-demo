@@ -132,7 +132,7 @@ class LocationsController extends Controller
             $object = $this->model->contains($request->json('geometry.coordinates'));
             $elapsed = microtime(true) - $start;
         } else {
-            $geometry = \geoPHP::load($request->input('geometry'), 'wkt');
+            $geometry = \geoPHP::load($request->json('geometry'), 'wkt');
             $object = $this->model->contains($geometry->asText('wkt'));
             $elapsed = microtime(true) - $start;
         }

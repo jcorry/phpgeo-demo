@@ -14,4 +14,22 @@ use Jenssegers\Mongodb\Eloquent\Model as Model;
 class GeojsonAction extends Model
 {
 
+    protected $connection = 'mongodb';
+
+    public function within($coordinates)
+    {
+        $object = self::whereRaw([
+            'location' => [
+                '$geoWithin' => [
+                    '$geometry' => [
+                        'type' => 'Polygon',
+                        'coordinates' => [$coordinates]
+                    ]
+                ]
+            ]
+        ])->orderBy('id', 'DESC')
+            ->get();
+
+        return $object;
+    }
 }

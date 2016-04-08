@@ -31,7 +31,11 @@ Route::post('/api/v1/postgis/locations/contains', 'LocationsController@contains'
 Route::post('/api/v1/mongo/locations/contains', 'LocationsController@contains');
 
 Route::post('/api/v1/postgis/actions/inradius', 'ActionsController@inRadius');
+
+Route::post('/api/v1/mongo/actions/within', 'ActionsController@within');
 Route::post('/api/v1/postgis/actions/within', 'ActionsController@within');
+
+
 
 
 Route::get('/api/v1/postgis/actions', 'ActionsController@listActions');
